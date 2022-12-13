@@ -1,0 +1,7 @@
+{
+  "semi": true,
+  "singleQuote": true,
+  "endOfLine": "lf",
+  "quoteProps": "as-needed",
+  "vueIndentScriptAndStyle": false
+}
