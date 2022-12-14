@@ -1,14 +1,6 @@
 <template>
-  <div class="text-3xl font-bold underline">Index</div>
-  <div>
-    Counter: {{ counter }}
-    <button @click="counter++">+</button>
-    <button @click="counter--">-</button>
-  </div>
+  <h2 class="text-3xl">Samples</h2>
+  <ul>
+    <li><NuxtLink to="/samples/counter">Counter</NuxtLink></li>
+  </ul>
 </template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const counter = ref<number>(0);
-</script>

@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { resolve } from 'path';
+
 export default defineNuxtConfig({
   vite: {
     server: {
@@ -8,12 +10,18 @@ export default defineNuxtConfig({
     },
     plugins: [],
   },
-  css: ["~/assets/css/main.css"],
+  css: [
+    // ...
+    '~/assets/css/main.css',
+  ],
   postcss: {
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
     },
   },
-  modules: ["@pinia/nuxt"],
+  modules: [
+    // ...
+    '@pinia/nuxt',
+  ],
 });
