@@ -3,5 +3,6 @@
   "singleQuote": true,
   "endOfLine": "lf",
   "quoteProps": "as-needed",
-  "vueIndentScriptAndStyle": false
+  "vueIndentScriptAndStyle": false,
+  "printWidth": 150
 }

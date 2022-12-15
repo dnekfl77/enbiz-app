@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useCounterStore } from '~/store/counter';
+import { useCounterStore } from '~~/store/sample/counter';
 
 const store = useCounterStore();
 </script>
