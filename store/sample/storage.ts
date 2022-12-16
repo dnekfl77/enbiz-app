@@ -3,22 +3,8 @@ import _ from 'lodash';
 import { useStorage, useLocalStorage, useSessionStorage, createGlobalState } from '@vueuse/core';
 
 export const useStorageStore = defineStore('storage', () => {
-  const localStore = useLocalStorage<any>(
-    'localStore',
-    {},
-    {
-      mergeDefaults: (s, d) => _.merge(s, d),
-      deep: true,
-    }
-  );
-  const sessionStore = useSessionStorage<any>(
-    'sessionStore',
-    {},
-    {
-      mergeDefaults: (s, d) => _.merge(s, d),
-      deep: true,
-    }
-  );
+  const localStore = useLocalStorage<any>('localStore', {}, { mergeDefaults: (s, d) => _.merge(s, d), deep: true });
+  const sessionStore = useSessionStorage<any>('sessionStore', {}, { mergeDefaults: (s, d) => _.merge(s, d), deep: true });
   const cookieStore = useCookie<any>('cookieStore', { secure: true, default: () => {} });
 
   function putLocalStorage(key: string, value: any) {

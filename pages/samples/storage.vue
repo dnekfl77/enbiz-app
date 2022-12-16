@@ -5,25 +5,13 @@
     <p>sessionStorage: {{ store.sessionStore }}</p>
     <p>cookieStorage: {{ store.cookieStore }}</p>
     <div class="mt-2">
-      <button
-        type="button"
-        class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        @click="pushLocalStore()"
-      >
+      <button type="button" class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="pushLocalStore()">
         local push
       </button>
-      <button
-        type="button"
-        class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        @click="pushSessoinStore()"
-      >
+      <button type="button" class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="pushSessoinStore()">
         session push
       </button>
-      <button
-        type="button"
-        class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        @click="pushCookieStore()"
-      >
+      <button type="button" class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="pushCookieStore()">
         cookie push
       </button>
     </div>
@@ -31,11 +19,7 @@
   <div class="mt-3">
     <p>gloablStorage: {{ globalStore }}</p>
     <div class="mt-2">
-      <button
-        type="button"
-        class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        @click="pushGlobalStore()"
-      >
+      <button type="button" class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="pushGlobalStore()">
         global push
       </button>
     </div>
