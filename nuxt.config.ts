@@ -23,5 +23,19 @@ export default defineNuxtConfig({
   modules: [
     // ...
     '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
   ],
+  runtimeConfig: {
+    public: {
+      ...process.env,
+    },
+  },
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'http://localhost:8090/api',
+        changeOrigin: true,
+      },
+    },
+  },
 });
