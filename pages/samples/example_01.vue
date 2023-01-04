@@ -1,17 +1,15 @@
 <template>
-
+  <div class="p-4">
+    <custom-input v-model:salutation="customer.salutation" v-model:name="customer.name" />
+    <p>{{ customer }}</p>
+  </div>
 </template>
 
-<script>
-import { defineComponent } from '@vue/composition-api'
+<script lang="ts" setup>
+var customer = reactive({ salutation: '', name: '' });
 
-export default defineComponent({
-  setup() {
-
-  },
-})
+onMounted(() => {
+});
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

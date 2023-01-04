@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 nav {
-  background: #6f6f00;
-  height: 2em;
+  /* background: #6f6f00; */
+  /* height: 2em; */
 }
 
 nav a {
-    margin-left: 40px;
+  /* margin-left: 40px; */
 }
 
 nav + * {
-    margin-top: 30px;
+  /* margin-top: 30px; */
 }

@@ -1,1 +1,1 @@
-export default define
+export default {}

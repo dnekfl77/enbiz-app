@@ -29,6 +29,9 @@ export default defineNuxtConfig({
     public: {
       ...process.env,
     },
+    app: {
+      initialCache: false
+    },
   },
   nitro: {
     devProxy: {
@@ -37,5 +40,8 @@ export default defineNuxtConfig({
         changeOrigin: true,
       },
     },
+  },
+  experimental: {
+    reactivityTransform: true,
   },
 });
