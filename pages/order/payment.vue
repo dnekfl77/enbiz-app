@@ -22,6 +22,7 @@
         </div>
         <div class="w-4/5">
           <input
+            :value="payInfo.goodName"
             name="good_name"
             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             id="inline-full-name"
@@ -36,6 +37,7 @@
         </div>
         <div class="w-4/5">
           <input
+            :value="payInfo.goodMny"
             name="good_mny"
             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             id="inline-full-name"
@@ -51,6 +53,7 @@
         </div>
         <div class="w-4/5">
           <input
+            value="홍길동"
             name="buyr_name"
             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             id="inline-full-name"
@@ -65,6 +68,7 @@
         </div>
         <div class="w-4/5">
           <input
+            value="010-0000-0000"
             name="buyr_tel1"
             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             id="inline-full-name"
@@ -79,6 +83,7 @@
         </div>
         <div class="w-4/5">
           <input
+            value="mail@example.com"
             name="buyr_mail"
             class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
             id="inline-full-name"
@@ -161,7 +166,7 @@
 
       <!-- 가맹점 정보 설정-->
       <input type="hidden" name="site_cd" :value="payInfo.kcpSiteCd" />
-      <input type="hidden" name="site_name" :value="payInfo.kcpSiteName" />
+      <input type="hidden" name="site_name" :value="payInfo?.kcpSiteName" />
       <input type="hidden" name="pay_method" value="" />
       <!--
         ※필수 항목
@@ -283,62 +288,22 @@
 <script lang="ts" setup>
 import _ from 'lodash';
 
-const payInfo: {
-  // ...
-  kcpSiteCd?: string;
-  kcpSiteName?: string;
-  kcpJsUrl?: string;
-  goodMny?: number;
-  goodName?: string;
-  orderXxx?: string;
-} = {};
-
-// const info = await useAsyncData
-
-const {data: res} = await useAsyncData(`info-${_.random(10)}`, () => {
-  return $fetch('/api/sample/payment/fetchPayInfo', {
-    method: 'GET',
-    params: { key: _.random(100)},
-    cache: 'reload'
+const { data } = await useAsyncData(`info`, () => {
+  return $fetch('http://localhost:8090/api/sample/payment/fetchPayInfo', {
+    method: 'get',
+    params: { key: _.random(100) },
+    cache: 'no-cache',
+    mode: 'cors',
   });
-})
-
-console.log('res.value:',res.value);
-
-const { data, pending, error, refresh } = await useFetch(() => `/api/sample/payment/fetchPayInfo`, {
-  key: `_.random(16)`,
-  method: 'GET',
-  immediate: true,
-  server: false,
-  headers: {
-    // ...
-  },
-  onRequest: ({ request, options }) => {
-    console.log('options.headers:', options.headers);
-  },
-  onResponse: ({ request, response, options }) => {
-    if (response._data.code !== '0000') {
-      return alert(response._data.message);
-    }
-
-    console.log('response._data:', response._data);
-
-    return _.merge(payInfo, response._data.payload);
-  },
-  onRequestError: ({ request, options, error }) => {
-    alert(error);
-  },
-  onResponseError: ({ request, response, options }) => {
-    alert('error');
-  },
 });
 
-useHead({
-  // script: [{ src: payInfo.kcpJsUrl, type: 'text/javascript' }],
-  script: [{ src: useRuntimeConfig().public.kcp_js_url, type: 'text/javascript' }],
-});
+if (!data.value) {
+  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+}
 
-const payForm = $ref();
+const payInfo = $ref<any>((data.value as any).payload);
+const payForm = $ref<HTMLFormElement>();
+
 const executePay = () => {
   KCP_Pay_Execute(payForm);
 };
@@ -346,6 +311,38 @@ const executePay = () => {
 const cancelPay = () => {
   alert('Cancel');
 };
+
+onMounted(() => {
+  window.m_Completepayment = async (form: any, event: any) => {
+    const payFormEl = payForm as HTMLFormElement;
+    GetField(payFormEl, form);
+
+    if (payFormEl.res_cd.value === '0000') {
+      const { data, error } = await useFetch(() => '/api/sample/payment/approve', {
+        method: 'post',
+        body: {
+          enc_data: payFormEl.enc_data.value,
+          enc_info: payFormEl.enc_info.value,
+          tran_cd: payFormEl.tran_cd.value,
+          ordr_idxx: payFormEl.ordr_idxx.value,
+          use_pay_method: payFormEl.use_pay_method.value,
+          good_mny: payFormEl.good_mny.value,
+          payco_direct: '',
+        },
+      });
+      event();
+      alert((data.value as any).payload.res_msg);
+    } else {
+      alert(`[${payFormEl.res_cd.value}] ${payFormEl.res_msg.value}`);
+      event();
+    }
+  };
+});
+
+useHead({
+  script: [{ src: payInfo.kcpJsUrl, type: 'text/javascript' }],
+  // script: [{ src: useRuntimeConfig().public.kcp_js_url, type: 'text/javascript' }],
+});
 </script>
 
 <style lang="scss" scoped>
