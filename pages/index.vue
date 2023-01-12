@@ -16,6 +16,7 @@
   <h3 class="text-3xl mt-5">Example</h3>
   <ul class="mt-1">
     <li><NuxtLink to="/example/example_01">Exam 01</NuxtLink></li>
+    <li><NuxtLink to="/example/example_02">Exam 02</NuxtLink></li>
     <li><NuxtLink to="/example/example_03">Exam 03</NuxtLink></li>
   </ul>
 </template>

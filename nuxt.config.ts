@@ -24,13 +24,14 @@ export default defineNuxtConfig({
     // ...
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
+    '@nuxtjs/device',
   ],
   runtimeConfig: {
     public: {
       ...process.env,
     },
     app: {
-      initialCache: false
+      initialCache: false,
     },
   },
   nitro: {

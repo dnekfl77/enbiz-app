@@ -27,8 +27,8 @@ const onCertification = async (evt: Event) => {
     method: 'get',
     params: {
       deviceType: 'PC',
-      returnUrl: 'http://localhost:3000/callback/pass',
-      errorUrl: 'http://localhost:3000/callback/pass',
+      returnUrl: 'http://localhost:3000/certification/callbackPass',
+      errorUrl: 'http://localhost:3000/certification/callbackPass',
     },
   });
 
