@@ -289,7 +289,7 @@
 import _ from 'lodash';
 
 const { data } = await useAsyncData(`info`, () => {
-  return $fetch('http://localhost:8090/api/sample/payment/fetchPayInfo', {
+  return $fetch(`${useRuntimeConfig().public.api_url}/api/sample/payment/payInfo`, {
     method: 'get',
     params: { key: _.random(100) },
     cache: 'no-cache',
@@ -312,7 +312,7 @@ const cancelPay = () => {
   alert('Cancel');
 };
 
-onMounted(() => {
+onMounted(async () => {
   window.m_Completepayment = async (form: any, event: any) => {
     const payFormEl = payForm as HTMLFormElement;
     GetField(payFormEl, form);
@@ -327,11 +327,18 @@ onMounted(() => {
           ordr_idxx: payFormEl.ordr_idxx.value,
           use_pay_method: payFormEl.use_pay_method.value,
           good_mny: payFormEl.good_mny.value,
+          good_name: payFormEl.good_name.value,
+          buyr_name: payFormEl.buyr_name.value,
+          buyr_tel1: payFormEl.buyr_tel1.value,
+          buyr_mail: payFormEl.buyr_mail.value,
+          target_pg: 'KCP',
           payco_direct: '',
         },
       });
-      event();
+
       alert((data.value as any).payload.res_msg);
+
+      location.href = '/order/orders';
     } else {
       alert(`[${payFormEl.res_cd.value}] ${payFormEl.res_msg.value}`);
       event();

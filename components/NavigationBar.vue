@@ -19,7 +19,9 @@
     <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
       <div class="text-sm lg:flex-grow">
         <a href="/" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Home</a>
+        <a href="/certification/pass" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Pass</a>
         <a href="/order/payment" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Payment</a>
+        <a href="/order/orders" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Orders</a>
         <a href="/accounts/signUp" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">Sign Up</a>
       </div>
       <div v-show="!_.isEmpty(userState.user)" class="text-sm mr-3 text-white text-teal-200">
