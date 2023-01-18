@@ -20,7 +20,27 @@
       <div class="text-sm lg:flex-grow">
         <a href="/" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Home</a>
         <a href="/certification/pass" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Pass</a>
-        <a href="/order/payment" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Payment</a>
+        <div class="dropdown inline-block relative mr-4">
+          <a
+            href="#"
+            class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white inline-flex items-center whitespace-no-wrap"
+            type="button"
+            >Dropdown
+            <svg class="fill-current h-4 w-4 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </a>
+          <ul class="dropdown-menu absolute hidden bg-teal-600 pt-1 text-gray-600">
+            <li class="dropdown-menu-item">
+              <a class="bg-gray-100 hover:bg-teal-400 py-1 pl-4 pr-10 block whitespace-no-wrap hover:text-white" href="/order/kcpPayment">KCP</a>
+            </li>
+            <li class="dropdown-menu-item">
+              <a class="bg-gray-100 hover:bg-teal-400 py-1 pl-4 pr-10 block whitespace-no-wrap hover:text-white" href="/order/inicisPayment"
+                >INICIS</a
+              >
+            </li>
+          </ul>
+        </div>
         <a href="/order/orders" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Orders</a>
         <a href="/accounts/signUp" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">Sign Up</a>
       </div>
@@ -52,4 +72,9 @@ onMounted(() => {});
 // div {
 //   background-color: #4b806c;
 // }
+.dropdown:hover {
+  .dropdown-menu {
+    display: block !important;
+  }
+}
 </style>

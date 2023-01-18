@@ -2,7 +2,8 @@
   <!-- ... -->
   <div class="flex flex-col text-sm w-full max-w-7xl mx-auto shadow w-full rounded-lg divide-y divide-gray-200">
     <h2 class="p-4 text-base font-bold">Orders</h2>
-    <div class="p-4 grid grid-flow-row-dense grid-cols-8 grid-rows-1" v-for="order in ordersStore.orders" :key="order.orderNo">
+    <div class="p-4 grid grid-flow-row-dense grid-cols-9 grid-rows-1" v-for="order in ordersStore.orders" :key="order.orderNo">
+      <span class="col-span-1 py-2">{{ order.targetPg }}</span>
       <span class="col-span-1 py-2">{{ order.orderNo }}</span>
       <span class="col-span-3 py-2">{{ order.goodsName }}</span>
       <span class="col-span-1 py-2">{{ numberWithCommas(order.goodsPrice) }}</span>
@@ -19,7 +20,7 @@
       </button>
     </div>
   </div>
-  <button @click.stop.prevent="changeOrders">RELAD</button>
+  <button @click.stop.prevent="changeOrders" v-show="false">RELAD</button>
 </template>
 
 <script lang="ts" setup>
