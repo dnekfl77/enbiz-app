@@ -6,12 +6,15 @@
 import { stringLiteral } from '@babel/types';
 import { H3Error, H3Event, readBody } from 'h3';
 import _ from 'lodash';
+import { useCallbackStore } from '~~/store/order/callback';
 
 definePageMeta({
   layout: 'empty',
 });
 
 const resp = ref<{ code?: string }>({});
+const callbackState = useCallbackStore();
+
 if (process.server) {
   const body = await readBody(useNuxtApp().ssrContext?.event as H3Event);
 
@@ -42,14 +45,16 @@ if (process.server) {
   });
 
   console.log('(responseData as any)?.code:', (responseData as any)?.code);
-
-  resp.value.code = (responseData as any)?.code;
+  callbackState.setResult((responseData as any).code, (responseData as any).message);
 }
 
-if (!process.server)
-  onMounted(() => {
-    console.log('resp:', resp);
-alert(resp.value.code);
-    location.href = '/order/orders';
-  });
+onMounted(() => {
+  if (callbackState.result.code != '0000') {
+    return alert(callbackState.result.message);
+  }
+
+  alert('결제완료.');
+
+  location.href = '/order/orders';
+});
 </script>

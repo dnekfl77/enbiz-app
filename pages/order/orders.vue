@@ -40,7 +40,7 @@ const { data, refresh } = useFetch(() => `/api/sample/order/selectOrders`, {
 const changeOrders = () => refresh();
 
 const cancelPay = async function (event: Event, ord: Ord) {
-  if (!confirm('취소?')) {
+  if (!confirm('취소하시겠습니까?')) {
     return;
   }
 
@@ -56,6 +56,7 @@ const cancelPay = async function (event: Event, ord: Ord) {
 
   alert('취소완료'), refresh();
 };
+
 
 onMounted(() => refresh());
 </script>
