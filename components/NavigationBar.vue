@@ -39,6 +39,11 @@
                 >INICIS</a
               >
             </li>
+            <li class="dropdown-menu-item">
+              <a class="bg-gray-100 hover:bg-teal-400 py-1 pl-4 pr-10 block whitespace-no-wrap hover:text-white" href="/order/socialPayment"
+                >Social</a
+              >
+            </li>
           </ul>
         </div>
         <a href="/order/orders" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Orders</a>

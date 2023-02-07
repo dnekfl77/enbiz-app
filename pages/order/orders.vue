@@ -57,7 +57,6 @@ const cancelPay = async function (event: Event, ord: Ord) {
   alert('취소완료'), refresh();
 };
 
-
 onMounted(() => refresh());
 </script>
 

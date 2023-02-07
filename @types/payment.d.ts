@@ -8,5 +8,7 @@ declare global {
 
   interface Window {
     INIStdPay: any;
+    Naver: any;
+    _PAY: any;
   }
 }

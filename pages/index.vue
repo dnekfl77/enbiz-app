@@ -18,5 +18,6 @@
     <li><NuxtLink to="/example/example_01">Exam 01</NuxtLink></li>
     <li><NuxtLink to="/example/example_02">Exam 02</NuxtLink></li>
     <li><NuxtLink to="/example/example_03">Exam 03</NuxtLink></li>
+    <li><NuxtLink to="/example/example_04">Exam 04</NuxtLink></li>
   </ul>
 </template>

@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts" setup>
-import { stringLiteral } from '@babel/types';
 import { H3Error, H3Event, readBody } from 'h3';
 import _ from 'lodash';
 import { useCallbackStore } from '~~/store/order/callback';
@@ -12,7 +11,6 @@ definePageMeta({
   layout: 'empty',
 });
 
-const resp = ref<{ code?: string }>({});
 const callbackState = useCallbackStore();
 
 if (process.server) {
