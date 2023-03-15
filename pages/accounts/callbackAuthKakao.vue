@@ -1,6 +1,8 @@
 <template></template>
 
 <script lang="ts" setup>
+import { useAuthentication } from '~~/composables/useAuthentication';
+
 definePageMeta({
   layout: 'empty',
 });
@@ -8,9 +10,29 @@ definePageMeta({
 onMounted(() => {
   const route = useRoute();
   const config = useRuntimeConfig();
+  const authentication = useAuthentication();
 
   console.log('query:', route.query.code);
   console.log('params:', route.params);
+
+  authentication
+    .signUp({
+      // request params
+      code: route.query.code,
+      redirectUrl: config.public.kakao_authoriz_callback_url,
+      state: route.query.state,
+      socialType: 'KAKAO',
+    })
+    .then((data) => {
+      console.log('data:', data);
+      if (data.code !== '0000') {
+        alert(data.message);
+      }
+      alert('login success.');
+      opener.signUpCallback(data, close);
+    });
+
+  return;
 
   const { data, pending, error, refresh } = useFetch(() => `/api/sample/social/sign`, {
     method: 'post',

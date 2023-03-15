@@ -4,7 +4,7 @@
     <div class="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
       <h1 class="font-bold text-center text-2xl mb-5">Logo</h1>
       <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
-        <div class="px-5 py-7">
+        <div class="px-5 py-7" style="pointer-events: none; opacity: 0.4">
           <label class="font-semibold text-sm text-gray-600 pb-1 block">Username</label>
           <input type="text" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
           <label class="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
@@ -23,14 +23,14 @@
           <div class="grid grid-cols-2 gap-1">
             <button
               type="button"
-              class="transition duration-200 border border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block"
+              class="transition duration-200 border border-gray-200 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-bold text-center inline-block bg-green-500 hover:bg-green-700"
               @click="openNaverOAuth()"
             >
               Naver
             </button>
             <button
               type="button"
-              class="transition duration-200 border border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block"
+              class="transition duration-200 border border-gray-200 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-bold text-center inline-block bg-yellow-500 hover:bg-yellow-700"
               @click="openKakaoOAuth()"
             >
               Kakao
@@ -58,7 +58,7 @@
                     d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"
                   />
                 </svg>
-                <span class="inline-block ml-1">Help</span>
+                <span class="inline-block ml-1" onclick="alert('Help!')">Help</span>
               </button>
             </div>
           </div>
@@ -81,23 +81,20 @@ useHead({
 });
 
 onMounted(() => {
-  window.signUpCallback = (data: any) => {
-    console.log(data);
-
-    const userStore = useUserState();
-    userStore.save({ ...data });
-
-    location.href = '/';
+  window.signUpCallback = (data: any, close: Function) => {
+    close();
+    
+    if (data.code === '0000') {
+      location.href = '/';
+    }
   };
 });
 
 function openNaverOAuth() {
-  const config = useRuntimeConfig();
   window.open(getNaverAuthorizUrl(), 'openAuthoriz', 'width=500,height=650');
 }
 
 function openKakaoOAuth() {
-  const config = useRuntimeConfig();
   window.open(getKakaoAuthorizUrl(), 'openAuthoriz', 'width=500,height=650');
 }
 

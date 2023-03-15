@@ -1,6 +1,9 @@
 <template></template>
 
 <script lang="ts" setup>
+import { useAuthentication } from '~~/composables/useAuthentication';
+
+
 definePageMeta({
   layout: 'empty',
 });
@@ -8,11 +11,31 @@ definePageMeta({
 onMounted(() => {
   const route = useRoute();
   const config = useRuntimeConfig();
+  const authentication = useAuthentication();
 
   console.log('query:', route.query.code);
   console.log('params:', route.params);
 
-  const { data, pending, error, refresh } = useFetch(() => `/api/sample/social/sign`, {
+  authentication
+    .signUp({
+      // request params
+      code: route.query.code,
+      redirectUrl: config.public.naver_authoriz_callback_url,
+      state: route.query.state,
+      socialType: 'NAVER',
+    })
+    .then((data) => {
+      console.log('data:', data);
+      if (data.code !== '0000') {
+        alert(data.message);
+      }
+      alert('login success.');
+      opener.signUpCallback(data, close);
+    });
+
+  return;
+
+  const { data, pending, error, refresh } = useFetch(() => `/api/sample/accounts/signSocial`, {
     method: 'post',
     body: {
       // request params

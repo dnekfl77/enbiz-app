@@ -10,5 +10,6 @@ declare global {
     INIStdPay: any;
     Naver: any;
     _PAY: any;
+    TossPayments: any;
   }
 }

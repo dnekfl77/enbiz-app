@@ -13,6 +13,7 @@
             id="order-no"
             type="text"
             placeholder="ordr_idxx"
+            readonly="true"
           />
         </div>
       </div>
@@ -288,20 +289,37 @@
 <script lang="ts" setup>
 import _ from 'lodash';
 
-const { data } = await useAsyncData(`info`, () => {
-  return $fetch(`${useRuntimeConfig().public.api_url}/api/sample/payment/kcpPayInfo`, {
-    method: 'get',
-    params: { key: _.random(100) },
-    cache: 'no-cache',
-    mode: 'cors',
-  });
-});
+const {
+  data: {
+    value: { payload: payInfo },
+  },
+} = await useAsyncData(
+  () => {
+    return $fetch(`${useRuntimeConfig().public.api_url}/api/sample/payment/kcpPayInfo`, {
+      method: 'get',
+      params: { key: _.random(100) },
+      cache: 'no-cache',
+      mode: 'cors',
+    });
+  },
+  {
+    transform: (response: any) => {
+      console.log('response.payload:', response.payload);
+      return response;
+    },
+  }
+);
+console.log('isRef:', isRef(payInfo));
+console.log('payInfo:', unref(payInfo));
+// if (!data.value) {
+//   throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+// }
 
-if (!data.value) {
-  throw createError({ statusCode: 404, statusMessage: 'Page Not Found' });
+if (!payInfo) {
+  throw createError({ statusCode: 500, statusMessage: 'Internal Server error.' });
 }
 
-const payInfo = $ref<any>((data.value as any).payload);
+// const payInfo = $ref<any>((data.value as any).payload);
 const payForm = $ref<HTMLFormElement>();
 
 const executePay = () => {

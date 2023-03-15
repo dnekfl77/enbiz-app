@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen flex flex-col py-12 text-sm">
     <form class="w-full max-w-2xl mx-auto shadow w-full rounded-lg divide-y divide-gray-200 py-2" name="payForm" id="payForm" ref="payForm">
-      <div class="flex items-center p-2">
+      <div class="flex items-center p-5 pt-2 pb-2">
         <div class="w-1/5">
           <label class="block text-gray-600 text-right mb-1 pr-4" for="order-no">주문번호</label>
         </div>
@@ -16,7 +16,7 @@
           />
         </div>
       </div>
-      <div class="flex items-center p-2">
+      <div class="flex items-center p-5 pt-2 pb-2">
         <div class="w-1/5">
           <label class="block text-gray-600 text-right mb-1 pr-4" for="goodname">상품명</label>
         </div>
@@ -31,7 +31,7 @@
           />
         </div>
       </div>
-      <div class="flex items-center p-2">
+      <div class="flex items-center p-5 pt-2 pb-2">
         <div class="w-1/5">
           <label class="block text-gray-600 text-right mb-1 pr-4" for="price">상품금액</label>
         </div>
@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div class="flex items-center p-2">
+      <div class="flex items-center p-5 pt-2 pb-2">
         <div class="w-1/5">
           <label class="block text-gray-600 text-right mb-1 pr-4" for="buyername">주문자명</label>
         </div>
@@ -62,7 +62,7 @@
           />
         </div>
       </div>
-      <div class="flex items-center p-2">
+      <div class="flex items-center p-5 pt-2 pb-2">
         <div class="w-1/5">
           <label class="block text-gray-600 text-right mb-1 pr-4" for="buyertel">전화번호</label>
         </div>
@@ -77,7 +77,7 @@
           />
         </div>
       </div>
-      <div class="flex items-center p-2">
+      <div class="flex items-center p-5 pt-2 pb-2">
         <div class="w-1/5">
           <label class="block text-gray-600 text-right mb-1 pr-4" for="buyeremail">이메일</label>
         </div>
@@ -111,6 +111,13 @@
           </button>
           <button
             type="button"
+            class="transition duration-300 col-span-1 border border-gray-200 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-bold text-center text-lg inline-block bg-blue-500 hover:bg-blue-700"
+            @click="executeTossPay"
+          >
+            Toss
+          </button>
+          <button
+            type="button"
             class="transition duration-300 border border-gray-200 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-bold text-center inline-block"
             @click="cancelPay"
           >
@@ -125,8 +132,8 @@
 <script lang="ts" setup>
 import _ from 'lodash';
 
+const userState = useUserState();
 const { data } = await useAsyncData(
-  `info`,
   () => {
     return $fetch(`${useRuntimeConfig().public.api_url}/api/sample/payment/socialPayInfo`, {
       method: 'get',
@@ -188,8 +195,52 @@ const executeKakaoPay = async () => {
   //window.open(readyData.payload.next_redirect_pc_url, '_kakaoPay', 'width=500, height=600');
 };
 
+const executeTossPay = async () => {
+  /*
+  const {
+    data: { value: data },
+    data: {
+      value: { payload },
+    },
+  } = await readyToss();
+
+  if (!!!data) {
+    return alert('요청이 잘못 됨');
+  }
+  if (data.code != '0000') {
+    return alert(data.message);
+  }
+
+  if (payload.code == -1) {
+    return alert(payload.msg);
+  }
+  */
+  const tossPayments = window.TossPayments(payInfo.tossPay.clientKey);
+
+  tossPayments
+    .requestPayment('카드', {
+      // 결제 수단
+      // 결제 정보
+      amount: payForm?.price.value,
+      orderId: payInfo.orderXxx,
+      orderName: payForm?.goodname.value,
+      customerName: `uer_${_.random(1000)}`,
+      successUrl: 'http://localhost:3000/order/callbackTossReturn',
+      failUrl: window.location.href,
+      flowMode: 'DIRECT',
+      easyPay: 'TOSSPAY',
+    })
+    .catch(function (error: any) {
+      if (error.code === 'USER_CANCEL') {
+        // 결제 고객이 결제창을 닫았을 때 에러 처리
+      } else if (error.code === 'INVALID_CARD_COMPANY') {
+        // 유효하지 않은 카드 코드에 대한 에러 처리
+      }
+    });
+};
+
 const readyKakao = async (): Promise<any> => {
-  return await useFetch<any>(() => '/api/sample/payment/kakaoPayReady', {
+  return await $fetch('/api/sample/payment/kakaoPayReady', {
     method: 'post',
     body: {
       partnerOrderId: payInfo.orderXxx, // "ST202208045790435",
@@ -204,6 +255,27 @@ const readyKakao = async (): Promise<any> => {
   });
 };
 
+/*
+const readyToss = async (): Promise<any> => {
+  return await useAsyncData<any>(`tossInfo`, () => {
+    return $fetch(`${useRuntimeConfig().public.api_url}/api/sample/payment/toss/ready`, {
+      method: 'post',
+      body: {
+        orderNo: payInfo.orderXxx, // "ST202208045790435",
+        partnerUserId: `uer_${_.random(1000)}`,
+        goodsName: payForm?.goodname.value, // "백면 로고 슬리브리스",
+        goodsPrice: payForm?.price.value,
+        callbackUrl: 'http://localhost:3000/order/callbackTossReturn',
+        cancelUrl: window.location.href,
+        returnUrl: window.location.href,
+      },
+      cache: 'no-cache',
+      mode: 'cors',
+    });
+  });
+};
+*/
+
 const cancelPay = () => {
   alert('Cancel');
 };
@@ -211,7 +283,10 @@ const cancelPay = () => {
 onMounted(async () => {});
 
 useHead({
-  script: [{ src: payInfo.naverPay.jsUrl, type: 'text/javascript' }],
+  script: [
+    { src: payInfo.naverPay.jsUrl, type: 'text/javascript' },
+    { src: payInfo.tossPay.jsUrl, type: 'text/javascript' },
+  ],
 });
 </script>
 

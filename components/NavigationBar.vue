@@ -25,7 +25,7 @@
             href="#"
             class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white inline-flex items-center whitespace-no-wrap"
             type="button"
-            >Dropdown
+            >Payment
             <svg class="fill-current h-4 w-4 inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
               <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
             </svg>
@@ -44,18 +44,21 @@
                 >Social</a
               >
             </li>
+            <li class="dropdown-menu-item">
+              <a class="bg-gray-100 hover:bg-teal-400 py-1 pl-4 pr-10 block whitespace-no-wrap hover:text-white" href="/order/tossPayment">Toss</a>
+            </li>
           </ul>
         </div>
         <a href="/order/orders" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Orders</a>
         <a href="/accounts/signUp" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">Sign Up</a>
       </div>
-      <div v-show="!_.isEmpty(userState.user)" class="text-sm mr-3 text-white text-teal-200">
-        Hello,{{ userState.user.username }} ({{ userState.user.email }})
+      <div v-show="authentication.isAuthorized()" class="text-sm mr-3 text-white text-teal-200">
+        Hello,{{ authentication.account.name }} ({{ authentication.account.email }})
       </div>
-      <div>
+      <div v-show="authentication.isAuthorized()">
         <a
           href="#"
-          @click="userState.remove"
+          @click="authentication.signOut"
           class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
           >SignOut</a
         >
@@ -66,11 +69,12 @@
 
 <script lang="ts" setup>
 import _ from 'lodash';
-import { useUserState } from '~/composables/useUserState';
 
-const userState = useUserState();
+const authentication = useAuthentication();
 
-onMounted(() => {});
+onMounted(() => {
+  console.log('%cOnMounted %cStart', 'color: #ccccff; font-size: 14px; font-weight: bold;', 'color: red; font-size: 14px;');
+});
 </script>
 
 <style lang="scss" scoped>
